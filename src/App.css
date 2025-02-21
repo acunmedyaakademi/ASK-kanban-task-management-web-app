@@ -1371,6 +1371,9 @@ body.dark-mode .editTask-subtask button{
   .container {
     padding: 24px 24px 64px;
     overflow-x: auto;
+    overflow-y: auto;
+    box-sizing: border-box;
+    height: calc(100vh - 96px);
   }
 
   .task-details-container,
