@@ -1310,19 +1310,6 @@ body.dark-mode .editTask-subtask button{
   height: 100%;
 }
 
-.drag-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 280px; /* Task genişliği */
-  background: white;
-  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-  padding: 10px;
-  border-radius: 8px;
-  z-index: 10000;
-  opacity: 0.9;
-}
-
 
 @media only screen and (min-width: 768px) {
   
