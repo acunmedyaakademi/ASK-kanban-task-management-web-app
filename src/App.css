@@ -1449,7 +1449,7 @@ body.dark-mode .editTask-subtask button{
       outline: 1px solid var(--main-purple);
     }
   }
-  .board-name-input,
+
   .addNewColumn-title-input,
   .addNewTask-title-input,
   .editTask-title-input
