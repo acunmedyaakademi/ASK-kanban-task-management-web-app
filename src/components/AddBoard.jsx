@@ -69,7 +69,7 @@ export default function AddBoard({}) {
               <input onChange={() => setErrorIndexes(errorIndexes.filter(i => i !== index))} name="columnName" type="text" />
               <p className="error-text">Required</p>
               <button type="button" onClick={() => deleteInput(x.id)}>
-                <img src="/images/deleteBtn.svg" />
+                <img className="delete-icon" src="/images/deleteBtn.svg" />
               </button>
             </div>
           ))}

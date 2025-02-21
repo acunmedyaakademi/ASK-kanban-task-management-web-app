@@ -15,10 +15,6 @@ export default function Container(){
   const { modalContent, setModalContent, isModalOpen, setIsModalOpen } = useContext(ModalContext);
   const { isOpen, setIsOpen } = useContext(IsOpenContext);
 
-  
-  
-  
-
   const [ selectedTask, setSelectedTask ] = useState(null);
 
   if (!data || data.length === 0) return <p>Loading data...</p>;

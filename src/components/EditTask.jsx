@@ -8,10 +8,28 @@ export default function EditTask({ task, setSelectedTask, setIsModalOpen }) {
 
   const [newSubtasks, setNewSubtasks] = useState([]);
   const [prevTask, setPrevTask] = useState(task);
+  const [ errorTitle, setErrorTitle ] = useState(false);
+  const [ errorIndexes, setErrorIndexes ] = useState([]);
+  const [ newErrorIndexes, setNewErrorIndexes ] = useState([]);
 
   function handleSubmit(e) {
     e.preventDefault();
-    if (!e.target.title.value.trim()) return;
+    if (!e.target.title.value.trim()){
+      setErrorTitle(true);
+      return;
+    }
+
+    const subtaskInputs = e.target.subtaskTitle && Array.from(e.target.subtaskTitle);
+    const isAnySubtaskEmpty = subtaskInputs && subtaskInputs.some(input => !input.value.trim());
+
+    setErrorIndexes(e.target.subtaskTitle && subtaskInputs.length > 0 ? subtaskInputs.reduce((acc, input, index) => !input.value.trim() ? [...acc, index] : acc, []) : e.target.subtaskTitle && e.target.subtaskTitle.value.trim() ? [] : [0]);
+
+    const newSubtaskInputs = e.target.newSubtaskTitle && Array.from(e.target.newSubtaskTitle);
+    const isAnyNewSubtaskEmpty = newSubtaskInputs && newSubtaskInputs.some(input => !input.value.trim());
+
+    setNewErrorIndexes(e.target.newSubtaskTitle && newSubtaskInputs.length > 0 ? newSubtaskInputs.reduce((acc, input, index) => !input.value.trim() ? [...acc, index] : acc, []) : e.target.newSubtaskTitle && e.target.newSubtaskTitle.value.trim() ? [] : [0]);
+
+    if ((e.target.newSubtaskTitle && newSubtaskInputs.length > 0 ? isAnyNewSubtaskEmpty : e.target.newSubtaskTitle && !e.target.newSubtaskTitle.value.trim()) || (e.target.subtaskTitle && subtaskInputs.length > 0 ? isAnySubtaskEmpty : e.target.subtaskTitle && !e.target.subtaskTitle.value.trim())) return;
 
     const updatedTask = {
       ...task,
@@ -88,8 +106,11 @@ export default function EditTask({ task, setSelectedTask, setIsModalOpen }) {
     <form onSubmit={handleSubmit}>
       <div className="editTask-container">
         <h2>Edit Task</h2>
-        <h3>Title</h3>
-        <input className="editTask-title-input" type="text" defaultValue={task.title} name="title" />
+        <div className={`editTask-title ${errorTitle ? 'error' : ''}`}>
+          <h3>Title</h3>
+          <input className="editTask-title-input" type="text" defaultValue={task.title} name="title" onChange={() => setErrorTitle(false)} />
+          <p className="error-text">Required</p>
+        </div>
         <div className="editTask-description">
           <h3>Description</h3>
           <textarea
@@ -102,8 +123,9 @@ export default function EditTask({ task, setSelectedTask, setIsModalOpen }) {
         <div className="editTask-subtasksContainer">
           <h3>Subtasks</h3>
           {task.subtasks.map((subtask, index) => (
-            <div key={index} className="editTask-subtask">
-              <input type="text" defaultValue={subtask.title} name="subtaskTitle" />
+            <div key={index} className={`editTask-subtask ${errorIndexes.includes(index) ? 'error' : ''}`}>
+              <input type="text" defaultValue={subtask.title} name="subtaskTitle" onChange={() => setErrorIndexes(errorIndexes.filter(i => i !== index))} />
+              <p className="error-text">Required</p>
               <button
                 type="button"
                 onClick={() => {
@@ -114,15 +136,16 @@ export default function EditTask({ task, setSelectedTask, setIsModalOpen }) {
                   setSelectedTask(updatedTask);
                 }}
               >
-                <img src="/images/deleteBtn.svg" alt="" />
+                <img className="delete-icon" src="/images/deleteBtn.svg" alt="" />
               </button>
             </div>
           ))}
           {newSubtasks.map((subtask, index) => (
-            <div key={index} className="editTask-subtask">
-              <input type="text" placeholder="New subtask" name="newSubtaskTitle" />
+            <div key={index} className={`editTask-subtask ${newErrorIndexes.includes(index) ? 'error' : ''}`}>
+              <input type="text" placeholder="New subtask" name="newSubtaskTitle" onChange={() => setNewErrorIndexes(newErrorIndexes.filter(i => i !== index))} />
+              <p className="error-text">Required</p>
               <button type="button" onClick={() => setNewSubtasks(newSubtasks.filter((_, i) => i !== index))}>
-                <img src="/images/deleteBtn.svg" alt="" />
+                <img className="delete-icon" src="/images/deleteBtn.svg" alt="" />
               </button>
             </div>
           ))}

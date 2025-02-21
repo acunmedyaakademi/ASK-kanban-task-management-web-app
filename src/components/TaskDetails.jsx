@@ -41,10 +41,11 @@ export default function TaskDetails({ task, setModalContent, setSelectedTask, mo
     setData(updatedData);
   }
 
-  function handleClick(status){
+  function handleClick(x){
+    console.log(task.id, data.boards.find(b => b.id == currentBoardId).columns.find(c => c.name === task.status).tasks.find(t => t.id == task.id))
     const updatedTask = {
       ...task,
-      status: status
+      status: x
     }
     const updatedData = {
       ...data,
@@ -53,7 +54,7 @@ export default function TaskDetails({ task, setModalContent, setSelectedTask, mo
           ? {
               ...board,
               columns: board.columns.map(column =>
-                column.name === status
+                column.name === x && task.status !== x
                   ? {
                       ...column,
                       tasks: [
@@ -64,11 +65,14 @@ export default function TaskDetails({ task, setModalContent, setSelectedTask, mo
                     }
                   :
                     column.name === task.status
-                    ? {
+                    ? task.status == x
+                      ? {
                         ...column,
-                        tasks: column.tasks.filter(t =>
-                          t !== task
-                        ),
+                        tasks: column.tasks.map(t => t.id == task.id ? updatedTask : t),
+                      }
+                      : {
+                        ...column,
+                        tasks: column.tasks.filter(t => t.id !== task.id),
                       }
                   : column
               ),
@@ -115,7 +119,8 @@ export default function TaskDetails({ task, setModalContent, setSelectedTask, mo
         <div className="task-details-subtasks-container">
           <h3>Subtasks ({task.subtasks.filter(x => x.isCompleted).length} of {task.subtasks.length})</h3>
           <div className="task-details-subtasks">
-            {task.subtasks.map((x, index) => (
+            {task.subtasks.length > 0 ? 
+            task.subtasks.map((x, index) => (
               <div className="task-details-subtask" key={index}>
                 <label htmlFor={`subtask-checkbox-${index}`}>
                   <input checked={x.isCompleted} type="checkbox" id={`subtask-checkbox-${index}`} onChange={() => handleChange(x, index)}/>
@@ -123,7 +128,8 @@ export default function TaskDetails({ task, setModalContent, setSelectedTask, mo
                   <p className={x.isCompleted ? 'completed' : null}>{x.title}</p>
                 </label>
               </div>
-            ))}
+            )) :
+            <p className="no-subtask-txt">No subtasks</p>}
           </div>
           <div className={`task-detail-status ${isSelecting ? 'selecting' : ''}`}>
             <h3>Current Status</h3>
