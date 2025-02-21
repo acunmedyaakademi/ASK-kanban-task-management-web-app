@@ -1,14 +1,13 @@
 import { useContext, useState } from "react";
 import { BoardContext, DataContext } from "../App";
 
-export default function AddNewTask() {
+export default function AddNewTask({ setIsModalOpen }) {
   const { data, setData } = useContext(DataContext);
   const { currentBoardId } = useContext(BoardContext);
 
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [subtasks, setSubtasks] = useState([""]);
-  const [status, setStatus] = useState("Todo");
   const [ isSelecting, setIsSelecting ] = useState(false);
   const [ taskStatus, setTaskStatus ] = useState(data.boards.find(x => x.id == currentBoardId).columns[0].name);
 
@@ -38,20 +37,25 @@ export default function AddNewTask() {
       subtasks: subtasks.map((sub) => ({ title: sub, isCompleted: false })),
     };
 
-    const updatedBoards = data.boards.map((board) => {
-      if (board.id === 0) {
-        return {
-          ...board,
-          columns: board.columns.map((col) => (col.name === status ? { ...col, tasks: [...col.tasks, newTask] } : col)),
-        };
-      }
-      return board;
-    });
+    const updatedData = {
+      ...data,
+      boards: data.boards.map((board) =>
+        board.id === currentBoardId
+          ? {
+              ...board,
+              columns: board.columns.map((col) =>
+                col.name === newTask.status ? { ...col, tasks: [...col.tasks, newTask] } : col
+              ),
+            }
+          : board
+      ),
+    }
 
-    setData({ ...data, boards: updatedBoards });
+    setData(updatedData);
     setTitle("");
     setDescription("");
     setSubtasks([""]);
+    setIsModalOpen(false);
   }
 
   function handleClick(status){
@@ -104,7 +108,7 @@ export default function AddNewTask() {
         </div>
         <div className={`form-actions ${isSelecting ? 'selecting' : ''}`}>
           <h3>Status</h3>
-          <button onClick={triggerMenu} className={`task-detail-trigger ${isSelecting ? 'selecting' : ''}`}>{taskStatus} <img src="/images/arrow-down.svg" alt="Icon" /></button>
+          <button type="button" onClick={triggerMenu} className={`task-detail-trigger ${isSelecting ? 'selecting' : ''}`}>{taskStatus} <img src="/images/arrow-down.svg" alt="Icon" /></button>
             <div className="task-detail-options">
               {data.boards.find(x => x.id == currentBoardId).columns.map(x => x.name).map((x, index) => (
                 <p onClick={() => handleClick(x)} key={index}>{x}</p>

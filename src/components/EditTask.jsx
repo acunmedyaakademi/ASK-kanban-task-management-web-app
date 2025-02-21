@@ -24,13 +24,13 @@ export default function EditTask({ task, setSelectedTask, setIsModalOpen }) {
           isCompleted: sub.isCompleted,
         })),
         ...(e.target.newSubtaskTitle
-          ? e.target.newSubtaskTitle.length > 0 // Eğer bir dizi ise, map ile dönüştür
+          ? e.target.newSubtaskTitle.length > 0
             ? Array.from(e.target.newSubtaskTitle).map((sub) => ({
                 id: crypto.randomUUID(),
                 title: sub.value,
                 isCompleted: false,
               }))
-            : [{ id: crypto.randomUUID(), title: e.target.newSubtaskTitle.value, isCompleted: false }] // Eğer tek eleman ise, doğrudan objeye çevir
+            : [{ id: crypto.randomUUID(), title: e.target.newSubtaskTitle.value, isCompleted: false }]
           : []),
       ],
     };
@@ -45,8 +45,8 @@ export default function EditTask({ task, setSelectedTask, setIsModalOpen }) {
                 column.name === updatedTask.status
                   ? {
                       ...column,
-                      tasks: column.tasks.some((t) => t.title === updatedTask.title)
-                        ? column.tasks.map((t) => (t.title === updatedTask.title ? updatedTask : t))
+                      tasks: column.tasks.some((t) => t.id === updatedTask.id)
+                        ? column.tasks.map((t) => (t.id === updatedTask.id ? updatedTask : t))
                         : [...column.tasks, updatedTask],
                     }
                   : column.name === prevTask.status

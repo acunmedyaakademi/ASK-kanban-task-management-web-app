@@ -30,9 +30,14 @@ export default function AddBoard({}) {
   }
 
   function handleClick() {
-    const newColumn = { id: newColumns[newColumns.length - 1].id + 1, name: "", tasks: [] };
+    const newColumn = { id: newColumns.length > 0 ? newColumns[newColumns.length - 1].id + 1 : 0, name: "", tasks: [] };
     setNewColumns([...newColumns, newColumn]);
   }
+
+  function deleteInput(id) {
+    setNewColumns(newColumns.filter((x) => x.id !== id));
+  }
+
   return (
     <form onSubmit={handleSubmit}>
       <div className="editTask-container">
@@ -43,8 +48,8 @@ export default function AddBoard({}) {
           <h3>Board Columns</h3>
           {newColumns.map((x) => (
             <div className="editTask-subtask" key={x.id}>
-              <input name="subtaskTitle" type="text" />
-              <button>
+              <input name="columnName" type="text" />
+              <button type="button" onClick={() => deleteInput(x.id)}>
                 <img src="/images/deleteBtn.svg" />
               </button>
             </div>
