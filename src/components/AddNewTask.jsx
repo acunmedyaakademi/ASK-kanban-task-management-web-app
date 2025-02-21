@@ -10,6 +10,9 @@ export default function AddNewTask({ setIsModalOpen }) {
   const [subtasks, setSubtasks] = useState([""]);
   const [ isSelecting, setIsSelecting ] = useState(false);
   const [ taskStatus, setTaskStatus ] = useState(data.boards.find(x => x.id == currentBoardId).columns[0].name);
+  const [ errorTitle, setErrorTitle ] = useState(false);
+  const [ errorIndexes, setErrorIndexes ] = useState([]);
+
 
   function handleAddSubtask() {
     setSubtasks([...subtasks, ""]);
@@ -27,7 +30,17 @@ export default function AddNewTask({ setIsModalOpen }) {
 
   function handleSubmit(e) {
     e.preventDefault();
-    if (!title.trim()) return;
+    if (!title.trim()){
+      setErrorTitle(true);
+      return;
+    }
+
+    const columnInputs = e.target.subtask && Array.from(e.target.subtask);
+    const isAnyColumnEmpty = columnInputs && columnInputs.some(input => !input.value.trim());
+
+    setErrorIndexes(e.target.subtask && columnInputs.length > 0 ? columnInputs.reduce((acc, input, index) => !input.value.trim() ? [...acc, index] : acc, []) : e.target.subtask && e.target.subtask.value.trim() ? [] : [0]);
+
+    if (e.target.subtask && columnInputs.length > 0 ? isAnyColumnEmpty : e.target.subtask && !e.target.subtask.value.trim()) return;
 
     const newTask = {
       id: Date.now(),
@@ -71,14 +84,17 @@ export default function AddNewTask({ setIsModalOpen }) {
     <div className="addNewTask-container">
       <h2>Add New Task</h2>
       <form onSubmit={handleSubmit}>
-        <h3>Title</h3>
-        <input
-          type="text"
-          placeholder="e.g. Take coffee break"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-          className="addNewTask-title-input"
-        />
+        <div className={`title-input-container ${errorTitle ? 'error' : ''}`}>
+          <h3>Title</h3>
+          <input
+            type="text"
+            placeholder="e.g. Take coffee break"
+            value={title}
+            onChange={(e) => {setTitle(e.target.value); setErrorTitle(false)}}
+            className="addNewTask-title-input"
+          />
+          <p className="error-text">Required</p>
+        </div>
         <div className="addNew-description">
         <h3>Description</h3>
         <textarea
@@ -90,13 +106,15 @@ export default function AddNewTask({ setIsModalOpen }) {
         <div className="addNew-subtasksContainer">
         <h3>Subtasks</h3>
         {subtasks.map((subtask, index) => (
-          <div key={index} className="subtask-item">
+          <div key={index} className={`subtask-item ${errorIndexes.find(e => e == index) || index == 0 && errorIndexes.includes(0) ? 'error' : ''}`}>
             <input
               type="text"
+              name="subtask"
               value={subtask}
-              onChange={(e) => handleChangeSubtask(index, e.target.value)}
-              className="input-subtask"
+              onChange={(e) => {handleChangeSubtask(index, e.target.value); setErrorIndexes(errorIndexes.filter(i => i !== index))}}
+              className={`input-subtask`}
             />
+            <p className="error-text">Required</p>
             <button type="button" onClick={() => handleRemoveSubtask(index)} className="btn-remove-subtask">
             <img src="/images/deleteBtn.svg" alt="" />
             </button>
