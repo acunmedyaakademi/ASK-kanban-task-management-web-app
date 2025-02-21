@@ -88,7 +88,7 @@ export default function EditTask({ task, setSelectedTask, setIsModalOpen }) {
     <form onSubmit={handleSubmit}>
       <div className="editTask-container">
         <h2>Edit Task</h2>
-        <h3>title</h3>
+        <h3>Title</h3>
         <input className="editTask-title-input" type="text" defaultValue={task.title} name="title" />
         <div className="editTask-description">
           <h3>Description</h3>

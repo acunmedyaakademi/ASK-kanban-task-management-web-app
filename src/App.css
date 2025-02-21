@@ -1236,6 +1236,41 @@ body.dark-mode .editTask-subtask button{
 }
 /* kerem end */
 
+.error-text{
+  display: none;
+}
+
+.error, .new-column-input.error{
+  position: relative;
+}
+
+.error input{
+  border-color: var(--red);
+}
+
+.error .error-text{
+  position: absolute;
+  bottom: 13px;
+  right: 10px;
+  display: block;
+  color: var(--red);
+  font-size: 12px;
+  line-height: 15px;
+}
+
+.editTask-subtask.error .error-text, .subtask-item.error .error-text{
+  right: 38px;
+}
+
+.new-column-input.error .error-text{
+  bottom: 22px;
+}
+
+.edit-board-container .new-column-input.error .error-text{
+  bottom: -2px;
+  right: 38px;
+}
+
 @media only screen and (min-width: 768px) {
   
   /* ali start */
