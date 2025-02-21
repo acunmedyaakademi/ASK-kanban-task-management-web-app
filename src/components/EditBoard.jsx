@@ -88,7 +88,7 @@ export default function EditBoard() {
             <p>Columns</p>
             {newData.boards.find(x => x.id == currentBoardId).columns.map(x => (
               <div className="new-column-input" key={x.id}>
-                <input name="columnName" type="text" defaultValue={x.name} onChange={(e) => editCurrentBoardName(e, x)} />
+                <input className="editBoard-column-input" name="columnName" type="text" defaultValue={x.name} onChange={(e) => editCurrentBoardName(e, x)} />
                 <img onClick={() => deleteColumn(x)} src="/images/deleteBtn.svg" />
               </div>
             ))}
@@ -98,7 +98,7 @@ export default function EditBoard() {
                 <img onClick={() => setNewColumns(newColumns.filter(c => c.id !== x.id))} src="/images/deleteBtn.svg" />
               </div>
             ))}
-            <button type="button" onClick={handleClick}>+ Add New Column</button>
+            <button className="cancel-btn" type="button" onClick={handleClick}>+ Add New Column</button>
           </div>
         <button className="save-btn" type="submit">Save Changes</button>
       </form>

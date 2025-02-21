@@ -1404,6 +1404,89 @@ body.dark-mode .editTask-subtask button{
   }
 
   /* sude end */
+  .editTask-description-textarea{
+    &:hover{
+      outline: none;
+      outline: 1px solid var(--main-purple);
+    }
+    &:focus{
+      outline: none;
+      outline: 1px solid var(--main-purple);
+    }
+  }
+  .board-name-input,
+  .addNewColumn-title-input,
+  .addNewTask-title-input,
+  .editTask-title-input
+  {
+    &:hover{
+      outline: none;
+      outline: 1px solid var(--main-purple);
+    }
+    &:focus{
+      border: 1px solid var(--main-purple);
+    }
+  }
+  .editBoard-column-input,
+  .input-subtask,
+  .editTask-subtask input{
+    &:hover{
+      outline: none;
+      outline: 1px solid var(--main-purple);
+    }
+    &:focus{
+      border: 1px solid var(--main-purple);
+    }
+  }
+  .addMewBoard-add-btn,
+  .cancel-btn,
+  .btn-add-subtask,
+  .edit-task-add-btn{
+    cursor: pointer;
+    &:hover{
+      background: rgba(99, 95, 199, 0.25);
+      transition: all .2s ease;
+    }
+  }
+  .task-detail-status button:last-child {
+    cursor: pointer;
+    &:hover{
+      background: rgba(168, 164, 255, 1);
+      transition: all .2s ease;
+    }
+  }
+  .addNew-description textarea{
+    &:hover{
+      outline: none;
+      outline: 1px solid var(--main-purple);
+    }
+    &:focus{
+      outline: none;
+      outline: 1px solid var(--main-purple);
+    }
+  }
+  .addNewTask-createTask{
+    cursor: pointer;
+    &:hover{
+      background: rgba(168, 164, 255, 1);
+      transition: all .2s ease;
+    }
+  }
+  
+  .new-column-container-buttons .save-btn {
+    cursor: pointer;
+    &:hover{
+      background-color: var(--main-purple-hover);
+      transition: all .2s ease;
+    }
+  }
+  .edit-board-container .save-btn{
+    cursor: pointer;
+    &:hover{
+      background-color: var(--main-purple-hover);
+      transition: all .2s ease;
+    }
+  }
 }
 
 @media only screen and (min-width: 1280px){

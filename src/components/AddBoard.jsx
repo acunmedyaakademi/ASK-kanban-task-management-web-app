@@ -54,7 +54,7 @@ export default function AddBoard({}) {
               </button>
             </div>
           ))}
-          <button type="button" onClick={handleClick}>
+          <button className="addMewBoard-add-btn" type="button" onClick={handleClick}>
             + Add New Column
           </button>
         </div>

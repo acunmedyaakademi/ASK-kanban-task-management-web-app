@@ -47,9 +47,9 @@ export default function AddNewColumn() {
     <div className="new-column-container">
       <h2>Add New Column</h2>
       <p>Name</p>
-      <input onChange={handleChange} value={inputValue} type="text" placeholder="e.g. To Do" />
+      <input className="addNewColumn-title-input" onChange={handleChange} value={inputValue} type="text" placeholder="e.g. To Do" />
       <div className="new-column-container-buttons">
-        <button onClick={cancel}>Cancel</button>
+        <button className="cancel-btn" onClick={cancel}>Cancel</button>
         <button className="save-btn" onClick={handleClick}>Create New Column</button>
       </div>
     </div>
