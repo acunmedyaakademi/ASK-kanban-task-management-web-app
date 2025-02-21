@@ -454,6 +454,7 @@ body.dark-mode .task-detail-status.selecting .task-detail-options, body.dark-mod
 }
 
 .task-columns-container {
+  position: relative;
   display: flex;
   gap: 24px;
   height: calc(100vh - 165px);
@@ -485,7 +486,7 @@ body.dark-mode .task-column-item p {
   height: 100%;
 }
 
-.task-column-container .empty-task-column{
+.task-column-container.empty-task-column{
   border: 2px dashed var(--lines-light);
   display: flex;
   width: 100%;
@@ -494,7 +495,7 @@ body.dark-mode .task-column-item p {
   border-radius: 6px;
 }
 
-body.dark-mode .task-column-container .empty-task-column{
+body.dark-mode .task-column-container.empty-task-column{
   border: 2px dashed var(--lines-dark);
 }
 
@@ -1284,6 +1285,45 @@ body.dark-mode .editTask-subtask button{
   cursor: pointer;
 }
 
+.task-column-item {
+  margin: 8px;
+  padding: 16px;
+  background-color: white;
+  border-radius: 4px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  cursor: grab;
+  position: relative; /* Sürüklenen öğenin konumunu sabitlemek için */
+}
+
+.task-column-item:active {
+  cursor: grabbing;
+}
+
+.task-column-item.dragging {
+  background-color: #e0e0e0;
+  opacity: 0.8;
+}
+.task-column-container{
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  height: 100%;
+}
+
+.drag-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 280px; /* Task genişliği */
+  background: white;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  padding: 10px;
+  border-radius: 8px;
+  z-index: 10000;
+  opacity: 0.9;
+}
+
+
 @media only screen and (min-width: 768px) {
   
   /* ali start */
@@ -1570,7 +1610,7 @@ body.dark-mode .editTask-subtask button{
     height: 100%;
   }
 
-  .task-column-container .empty-task-column{
+  .task-column-container.empty-task-column{
     height: calc(100% - 39px);
   }
 
