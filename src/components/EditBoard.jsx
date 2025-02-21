@@ -19,7 +19,10 @@ export default function EditBoard() {
 
   function handleSubmit(e){
     e.preventDefault();
-    if (!e.target.boardName.value.trim()) return;
+    if (!e.target.boardName.value.trim()){
+      setErrorTitle(true);
+      return; 
+    }
 
     const columnInputs = e.target.columnName && Array.from(e.target.columnName);
     const isAnyColumnEmpty = columnInputs && columnInputs.some(input => !input.value.trim());
@@ -97,22 +100,25 @@ export default function EditBoard() {
     <div className="edit-board-container">
       <form onSubmit={handleSubmit}>
         <h2>Edit Board</h2>
+        <div className={`edit-board-name ${errorTitle ? 'error' : ''}`}>
         <p>Board Name</p>
-        <input className="board-name-input" type="text" name="boardName" defaultValue={data.boards.find(x => x.id == currentBoardId).name} placeholder="e.g. Project Management" />
+          <input className="board-name-input" type="text" name="boardName" defaultValue={data.boards.find(x => x.id == currentBoardId).name} onChange={() => setErrorTitle(false)} placeholder="e.g. Project Management" />
+          <p className="error-text">Required</p>
+        </div>
         <div className="new-columns-input-container">
             <p>Columns</p>
             {newData.boards.find(x => x.id == currentBoardId).columns.map((x, index) => (
               <div className={`new-column-input ${errorIndexes.find(e => e == index) || index == 0 && errorIndexes.includes(0) ? 'error' : ''}`} key={x.id}>
                 <input className="editBoard-column-input" name="columnName" type="text" defaultValue={x.name} onChange={(e) =>{ editCurrentBoardName(e, x); setErrorIndexes(errorIndexes.filter(i => i !== index))}} />
                 <p className="error-text">Required</p>
-                <img onClick={() => deleteColumn(x)} src="/images/deleteBtn.svg" />
+                <img className="delete-icon" onClick={() => deleteColumn(x)} src="/images/deleteBtn.svg" />
               </div>
             ))}
             {newColumns.map((x, index) => (
               <div className={`new-column-input ${newErrorIndexes.find(e => e == index) || index == 0 && newErrorIndexes.includes(0) ? 'error' : ''}`} key={x.id}>
                 <input className="editBoard-column-input" name="newColumnName" type="text" onChange={() => setNewErrorIndexes(newErrorIndexes.filter(i => i !== index))} />
                 <p className="error-text">Required</p>
-                <img onClick={() => setNewColumns(newColumns.filter(c => c.id !== x.id))} src="/images/deleteBtn.svg" />
+                <img className="delete-icon" onClick={() => setNewColumns(newColumns.filter(c => c.id !== x.id))} src="/images/deleteBtn.svg" />
               </div>
             ))}
             <button className="cancel-btn" type="button" onClick={handleClick}>+ Add New Column</button>

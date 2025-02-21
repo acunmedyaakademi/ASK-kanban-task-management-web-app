@@ -454,9 +454,10 @@ body.dark-mode .task-detail-status.selecting .task-detail-options, body.dark-mod
 }
 
 .task-columns-container {
+  position: relative;
   display: flex;
   gap: 24px;
-  height: 100%;
+  height: calc(100vh - 165px);
 }
 
 .task-column h2 {
@@ -485,16 +486,16 @@ body.dark-mode .task-column-item p {
   height: 100%;
 }
 
-.task-column-container .empty-task-column{
+.task-column-container.empty-task-column{
   border: 2px dashed var(--lines-light);
   display: flex;
   width: 100%;
   flex-grow: 1;
-  height: 100%;
+  height: calc(100% - 39px);
   border-radius: 6px;
 }
 
-body.dark-mode .task-column-container .empty-task-column{
+body.dark-mode .task-column-container.empty-task-column{
   border: 2px dashed var(--lines-dark);
 }
 
@@ -715,13 +716,17 @@ body.dark-mode .new-column {
   margin-bottom: 0;
 }
 
-.task-details-container p.description {
+.task-details-container p.description, .no-subtask-txt {
   font-weight: 500;
   font-size: 13px;
   line-height: 23px;
   letter-spacing: 0px;
   color: var(--medium-gray);
   margin-bottom: 24px;
+}
+
+.no-subtask-txt{
+  margin-bottom: 0;
 }
 
 .task-details-subtasks-container h3, .edit-board-container p, .new-column-container p {
@@ -770,6 +775,7 @@ body.dark-mode .task-details-subtask {
   display: inline-block;
   border: 1px solid #828fa33f;
   border-radius: 2px;
+  flex-shrink: 0;
 }
 
 body.dark-mode .task-details-subtask label span {
@@ -1271,6 +1277,40 @@ body.dark-mode .editTask-subtask button{
   right: 38px;
 }
 
+.edit-board-name.error .error-text{
+  bottom: 20px;
+}
+
+.delete-icon{
+  cursor: pointer;
+}
+
+.task-column-item {
+  margin: 8px;
+  padding: 16px;
+  background-color: white;
+  border-radius: 4px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  cursor: grab;
+  position: relative; /* Sürüklenen öğenin konumunu sabitlemek için */
+}
+
+.task-column-item:active {
+  cursor: grabbing;
+}
+
+.task-column-item.dragging {
+  background-color: #e0e0e0;
+  opacity: 0.8;
+}
+.task-column-container{
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  height: 100%;
+}
+
+
 @media only screen and (min-width: 768px) {
   
   /* ali start */
@@ -1557,7 +1597,7 @@ body.dark-mode .editTask-subtask button{
     height: 100%;
   }
 
-  .task-column-container .empty-task-column{
+  .task-column-container.empty-task-column{
     height: calc(100% - 39px);
   }
 

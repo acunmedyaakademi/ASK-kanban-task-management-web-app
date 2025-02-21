@@ -44,6 +44,13 @@ export default function Header() {
   }
 
   useEffect(() => {
+    if(window.matchMedia(('(prefers-color-scheme : dark)')).matches) {
+      setTheme("dark-mode"); 
+      setChecked(true);
+    }
+  }, []);
+
+  useEffect(() => {
     if (theme === "dark-mode") {
       document.body.classList.add("dark-mode");
     } else {
@@ -54,7 +61,7 @@ export default function Header() {
   function toggleTheme() {
     if (theme === "dark-mode") {
       setTheme("");
-    } else {
+    } else{
       setTheme("dark-mode");
     }
     setChecked(!checked);

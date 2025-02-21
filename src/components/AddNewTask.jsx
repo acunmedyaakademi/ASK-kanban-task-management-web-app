@@ -115,7 +115,7 @@ export default function AddNewTask({ setIsModalOpen }) {
               className={`input-subtask`}
             />
             <p className="error-text">Required</p>
-            <button type="button" onClick={() => handleRemoveSubtask(index)} className="btn-remove-subtask">
+            <button type="button" onClick={() => handleRemoveSubtask(index)} className="btn-remove-subtask delete-icon">
             <img src="/images/deleteBtn.svg" alt="" />
             </button>
           </div>
