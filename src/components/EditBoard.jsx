@@ -103,14 +103,14 @@ export default function EditBoard() {
             <p>Columns</p>
             {newData.boards.find(x => x.id == currentBoardId).columns.map((x, index) => (
               <div className={`new-column-input ${errorIndexes.find(e => e == index) || index == 0 && errorIndexes.includes(0) ? 'error' : ''}`} key={x.id}>
-                <input name="columnName" type="text" defaultValue={x.name} onChange={(e) =>{ editCurrentBoardName(e, x); setErrorIndexes(errorIndexes.filter(i => i !== index))}} />
+                <input className="editBoard-column-input" name="columnName" type="text" defaultValue={x.name} onChange={(e) =>{ editCurrentBoardName(e, x); setErrorIndexes(errorIndexes.filter(i => i !== index))}} />
                 <p className="error-text">Required</p>
                 <img onClick={() => deleteColumn(x)} src="/images/deleteBtn.svg" />
               </div>
             ))}
             {newColumns.map((x, index) => (
               <div className={`new-column-input ${newErrorIndexes.find(e => e == index) || index == 0 && newErrorIndexes.includes(0) ? 'error' : ''}`} key={x.id}>
-                <input name="newColumnName" type="text" onChange={() => setNewErrorIndexes(newErrorIndexes.filter(i => i !== index))} />
+                <input className="editBoard-column-input" name="newColumnName" type="text" onChange={() => setNewErrorIndexes(newErrorIndexes.filter(i => i !== index))} />
                 <p className="error-text">Required</p>
                 <img onClick={() => setNewColumns(newColumns.filter(c => c.id !== x.id))} src="/images/deleteBtn.svg" />
               </div>
