@@ -1,7 +1,9 @@
 import { useState, useContext, useEffect } from "react";
 import { DataContext, BoardContext, ModalContext, IsOpenContext, ThemeContext } from "../App";
+import { createClient } from "@supabase/supabase-js";
+const supabase = createClient('https://bhfctmyzzbrdigrrmmtp.supabase.co', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJoZmN0bXl6emJyZGlncnJtbXRwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDA4MTk1MjIsImV4cCI6MjA1NjM5NTUyMn0.VH1E91hLCrrBL0F1K7ONIVfpS6RBkZp8TlZg5Bq79kk');
 
-export default function Header() {
+export default function Header({ setIsLoggedIn }) {
   const { data, setData } = useContext(DataContext);
   const { isOpen, setIsOpen } = useContext(IsOpenContext);
   const { modalContent, setModalContent, isModalOpen, setIsModalOpen } = useContext(ModalContext);
@@ -72,6 +74,11 @@ export default function Header() {
     setIsModalOpen(true);
     setModal(!modal)
   }
+  async function handleLogout() {
+    await supabase.auth.signOut(); // Supabase oturumunu sonlandır
+    setIsLoggedIn(false); // isLoggedIn durumunu false yap
+  }
+  
 
   return (
     <>
@@ -104,8 +111,13 @@ export default function Header() {
           {
             isMobile ? <button onClick={() => { setModalContent("add"); setIsModalOpen(true); setModal(false) }} className="plus-btn"><img src="\images\+.svg" alt="" /></button>
               :
+              <>
+              <button className="plus-btn" onClick={handleLogout}>Çıkış yap</button>
+
               <button className="plus-btn" onClick={() => { setModalContent("add"); setIsModalOpen(true); setModal(false) }}> + Add New Task</button>
+              </>
           }
+          
           <div className="modal-container">
             <button className="dot-btn" onClick={toggleModal}>
               <img src="\images\three-dot.svg" alt="" />
