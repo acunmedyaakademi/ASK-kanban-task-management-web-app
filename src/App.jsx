@@ -1,9 +1,10 @@
 import { createContext, useEffect, useState } from 'react'
 import './App.css'
+import "./Login.css"
 import Container from './components/Container'
 import Header from './components/Header'
 import AddNewTask from './components/AddNewTask';
-import Login from './components/login';
+import Login from './components/Login';
 import { createClient } from '@supabase/supabase-js';
 
 const supabase = createClient('https://bhfctmyzzbrdigrrmmtp.supabase.co', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJoZmN0bXl6emJyZGlncnJtbXRwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDA4MTk1MjIsImV4cCI6MjA1NjM5NTUyMn0.VH1E91hLCrrBL0F1K7ONIVfpS6RBkZp8TlZg5Bq79kk')

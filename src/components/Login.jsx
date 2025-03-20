@@ -7,6 +7,8 @@ export default function Login({ onLogin }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errorMsg, setErrorMsg] = useState("");
+  const [loading, setLoading] = useState(true);
+  const [isSignUp, setIsSignUp] = useState(false);
 
   useEffect(() => {
     async function checkSession() {
@@ -14,11 +16,13 @@ export default function Login({ onLogin }) {
       if (data.session) {
         onLogin(data.session);// Eğer oturum açılmışsa, onLogin'e session bilgisi ilet
       }
+      setLoading(false);
     }
     checkSession();
   }, [onLogin]);
 
-  async function handleLogin() {
+  async function handleLogin(e) {
+    e.preventDefault();
     const { data, error } = await supabase.auth.signInWithPassword({
       email,
       password,
@@ -29,26 +33,57 @@ export default function Login({ onLogin }) {
     } else {
         onLogin(data.session); // Başarılı girişte ana sayfaya yönlendir
     }
+    setLoading(false);
+  }
+  async function handleSignUp(e) {
+    e.preventDefault();
+    const { data, error } = await supabase.auth.signUp({
+      email,
+      password,
+    })
+    if (error) {
+      setErrorMsg(error.message);
+    } else {
+      alert("Kayıt başarılı! Lütfen giriş yapın.");
+      setIsSignUp(false); // Kayıt başarılıysa giriş ekranına dön
+    }
+    setLoading(false);
   }
 
-
+  if (loading) {
+    return <div>Loading...</div>;
+  }
   return (
-    <div>
-      <h1>Giriş Yap</h1>
-      {errorMsg && <p style={{ color: "red" }}>{errorMsg}</p>}
-      <input
-        type="email"
-        placeholder="Email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-      />
-      <input
-        type="password"
-        placeholder="Şifre"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-      />
-      <button onClick={handleLogin}>Giriş</button>
+    <div className="login-container">
+      <div className="login-box">
+        <h1>{isSignUp ? "Kayıt Ol" : "Giriş Yap"}</h1>
+        {errorMsg && <p className="error-message">{errorMsg}</p>}
+        <input
+          type="email"
+          placeholder="Email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+        />
+        <input
+          type="password"
+          placeholder="Şifre"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
+
+        {isSignUp ? (
+          <button onClick={handleSignUp}>Kayıt Ol</button>
+        ) : (
+          <button onClick={handleLogin}>Giriş</button>
+        )}
+
+        <p>
+          {isSignUp ? "Zaten hesabınız var mı?" : "Hesabınız yok mu?"}{" "}
+          <button onClick={() => setIsSignUp(!isSignUp)}>
+            {isSignUp ? "Giriş Yap" : "Kayıt Ol"}
+          </button>
+        </p>
+      </div>
     </div>
   );
-}
+  }
